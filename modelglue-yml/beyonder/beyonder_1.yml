@@ -1,0 +1,31 @@
+base_model: openchat/openchat_3.5
+experts:
+  - source_model: fblgit/UNA-TheBeagle-7b-v1
+    positive_prompts:
+      - "chat"
+      - "assistant"
+      - "tell me"
+      - "explain"
+  - source_model: beowolx/CodeNinja-1.0-OpenChat-7B
+    positive_prompts:
+      - "code"
+      - "python"
+      - "javascript"
+      - "programming"
+      - "algorithm"
+  - source_model: NeuralNovel/Panda-7B-v0.1
+    positive_prompts:
+      - "storywriting"
+      - "write"
+      - "scene"
+      - "story"
+      - "character"
+  - source_model: meta-math/MetaMath-Mistral-7B
+    positive_prompts:
+      - "reason"
+      - "math"
+      - "mathematics"
+      - "solve"
+      - "count"
+
+
