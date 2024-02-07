@@ -1,0 +1,24 @@
+models:
+  - model: openchat/openchat_3.5
+    # no parameters necessary for base model
+  - model: fblgit/UNA-TheBeagle-7b-v1
+    parameters:
+      weight: 0.25
+      density: 0.4
+  - model: beowolx/CodeNinja-1.0-OpenChat-7B
+    parameters:
+      weight: 0.25
+      density: 0.4
+  - model: NeuralNovel/Panda-7B-v0.1
+    parameters:
+      weight: 0.25
+      density: 0.4
+  - model: meta-math/MetaMath-Mistral-7B
+    parameters:
+      weight: 0.25
+      density: 0.4
+merge_method: dare_ties
+base_model: openchat/openchat_3.5
+parameters:
+  int8_mask: true
+dtype: bfloat16
