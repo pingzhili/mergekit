@@ -1,0 +1,15 @@
+slices:
+  - sources:
+      - model: checkpoints/linear_merge_4models
+        layer_range: [ 0, 32 ]
+      - model: openchat/openchat_3.5
+        layer_range: [ 0, 32 ]
+merge_method: slerp
+base_model: openchat/openchat_3.5
+parameters:
+  t:
+    - filter: self_attn
+      value: 0
+    - filter: mlp
+      value: 1
+    - value: 0
