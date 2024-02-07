@@ -1,9 +1,8 @@
 base_model: openchat/openchat_3.5
-dtype: bfloat16
 experts:
   - source_model: fblgit/UNA-TheBeagle-7b-v1
     positive_prompts:
-      - "compare"
+      - "chat"
       - "assistant"
       - "tell me"
       - "explain"
