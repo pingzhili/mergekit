@@ -49,8 +49,8 @@ def build(
     dense_model = ModelReference.parse(dense_dir)
 
     moe_config = moe_model.config(trust_remote_code=False)
-    moe_config.auto_map['AutoModelForCausalLM'] = "modeling_mixtral_hybrid.MixtralHybridForCausalLM"
     out_config = MixtralHybridConfig(**moe_config.to_dict())
+    out_config.auto_map['AutoModelForCausalLM'] = "modeling_mixtral_hybrid.MixtralHybridForCausalLM"
     out_config.num_dense_layers = num_dense_layers
     out_config.save_pretrained(out_path)
     modeling_file_path = os.path.join(get_script_path(), "mixtral_hybrid", "modeling_mixtral_hybrid.py")
