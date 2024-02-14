@@ -64,7 +64,7 @@ def build(
             tensor_name = name_format.format(idx=layer_idx)
 
             if ".mlp." in name_format and layer_idx >= num_dense_layers:
-                for expert_index in enumerate(moe_config.num_local_experts):
+                for expert_index in range(moe_config.num_local_experts):
                     expert_name = tensor_name.replace(
                         ".mlp.gate_proj", f".block_sparse_moe.experts.{expert_index}.w1"
                     )
