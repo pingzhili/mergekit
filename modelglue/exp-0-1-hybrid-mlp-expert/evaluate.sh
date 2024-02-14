@@ -1,4 +1,4 @@
-models=("checkpoints/exp-0-1-hybrid-mlp-expert/hybrid-moe-dense-8" "checkpoints/exp-0-1-hybrid-mlp-expert/hybrid-moe-dense-24")
+models=("checkpoints/exp-0-1-hybrid-mlp-expert/hybrid-moe-dense-8" "checkpoints/exp-0-1-hybrid-mlp-expert/hybrid-moe-dense-24" "checkpoints/exp-0-2-hybrid-mlp-expert/hybrid-moe-dense-16")
 i=0
 for model in "${models[@]}"; do
     ((i++))
