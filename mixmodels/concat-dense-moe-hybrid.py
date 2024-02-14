@@ -50,9 +50,10 @@ def build(
 
     moe_config = moe_model.config(trust_remote_code=False)
     out_config = MixtralHybridConfig(**moe_config.to_dict())
-    out_config.auto_map['AutoModelForCausalLM'] = "modeling_mixtral_hybrid.MixtralHybridForCausalLM"
     out_config.num_dense_layers = num_dense_layers
     out_config.save_pretrained(out_path)
+    out_config = MixtralHybridConfig.from_pretrained(out_path)
+    out_config.auto_map['AutoModelForCausalLM'] = "modeling_mixtral_hybrid.MixtralHybridForCausalLM"
     modeling_file_path = os.path.join(get_script_path(), "mixtral_hybrid", "modeling_mixtral_hybrid.py")
     shutil.copy(modeling_file_path, os.path.join(out_path, "modeling_mixtral_hybrid.py"))
 
