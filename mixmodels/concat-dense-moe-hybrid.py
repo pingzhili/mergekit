@@ -59,7 +59,7 @@ def build(
             tensor_name, tensor.to(dtype=out_dtype), clone=False
         )
 
-    for name_format in tqdm.tqdm(MISTRAL_INFO.layer_weight_formats()):
+    for name_format in tqdm(MISTRAL_INFO.layer_weight_formats()):
         for layer_idx in range(out_config.num_hidden_layers):
             tensor_name = name_format.format(idx=layer_idx)
 
