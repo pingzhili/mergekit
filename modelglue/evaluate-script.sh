@@ -4,7 +4,7 @@ for model in "${models[@]}"; do
     ((i++))
     CUDA_VISIBLE_DEVICES=0,1,2,3 accelerate launch --main_process_port 21001  -m lm_eval \
         --model hf \
-        --model_args pretrained=$model \
+        --model_args pretrained=$model,dtype="bfloat16" \
         --tasks mmlu \
         --num_fewshot 5 \
         --batch_size 1 \
