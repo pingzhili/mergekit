@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 # @Author: pingzhili
 # @Time: 2024/2/14
+import os
+import shutil
+import sys
 from typing import Optional
 
 from fire import Fire
@@ -11,6 +14,10 @@ from mergekit.architecture import MISTRAL_INFO
 from mergekit.common import ModelReference, dtype_from_name
 from mergekit.io import LazyTensorLoader, TensorWriter
 from mixmodels.mixtral_hybrid import MixtralHybridConfig
+
+
+def get_script_path():
+    return os.path.dirname(os.path.realpath(sys.argv[0]))
 
 
 def build(
@@ -42,9 +49,12 @@ def build(
     dense_model = ModelReference.parse(dense_dir)
 
     moe_config = moe_model.config(trust_remote_code=False)
+    moe_config.auto_map['AutoModelForCausalLM'] = "modeling_mixtral_hybrid.MixtralHybridForCausalLM"
     out_config = MixtralHybridConfig(**moe_config.to_dict())
     out_config.num_dense_layers = num_dense_layers
     out_config.save_pretrained(out_path)
+    modeling_file_path = os.path.join(get_script_path(), "mixtral_hybrid", "modeling_mixtral_hybrid.py")
+    shutil.copy(modeling_file_path, os.path.join(out_path, "modeling_mixtral_hybrid.py"))
 
     moe_loader = LazyTensorLoader(moe_model.tensor_index(), lazy_unpickle=False)
     dense_loader = LazyTensorLoader(dense_model.tensor_index(), lazy_unpickle=False)
