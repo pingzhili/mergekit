@@ -100,7 +100,10 @@ def load_balancing_loss_func(
 
     if isinstance(gate_logits, tuple):
         compute_device = gate_logits[0].device
-        concatenated_gate_logits = torch.cat([layer_gate.to(compute_device) for layer_gate in gate_logits], dim=0)
+        # hybrid add: some layers are dense and have `None` router logits
+        concatenated_gate_logits = torch.cat([
+            layer_gate.to(compute_device) for layer_gate in gate_logits if layer_gate is not None
+        ], dim=0)
 
     routing_weights = torch.nn.functional.softmax(concatenated_gate_logits, dim=-1)
 
@@ -882,12 +885,15 @@ class MixtralHybridDecoderLayer(nn.Module):
     def __init__(self, config: MixtralHybridConfig, layer_idx: int):
         super().__init__()
         self.hidden_size = config.hidden_size
+        self.is_sparse = (layer_idx >= config.num_dense_layers)  # later layers are sparse
 
         self.self_attn = MIXTRAL_ATTENTION_CLASSES[config._attn_implementation](config, layer_idx)
 
-        self.block_sparse_moe = MixtralSparseMoeBlock(
-            config
-        ) if layer_idx >= config.num_dense_layers else MixtralBlockSparseTop2MLP(config)
+        if self.is_sparse:
+            self.block_sparse_moe = MixtralSparseMoeBlock(config)
+        else:
+            # hybrid add: first K layers are dense
+            self.mlp = MixtralBlockSparseTop2MLP(config)
         self.input_layernorm = MixtralRMSNorm(config.hidden_size, eps=config.rms_norm_eps)
         self.post_attention_layernorm = MixtralRMSNorm(config.hidden_size, eps=config.rms_norm_eps)
 
@@ -941,7 +947,12 @@ class MixtralHybridDecoderLayer(nn.Module):
         # Fully Connected
         residual = hidden_states
         hidden_states = self.post_attention_layernorm(hidden_states)
-        hidden_states, router_logits = self.block_sparse_moe(hidden_states)
+        if self.is_sparse:
+            hidden_states, router_logits = self.block_sparse_moe(hidden_states)
+        else:
+            # hybrid add: first K layers are dense
+            hidden_states = self.mlp(hidden_states)
+            router_logits = None
         hidden_states = residual + hidden_states
 
         outputs = (hidden_states,)
