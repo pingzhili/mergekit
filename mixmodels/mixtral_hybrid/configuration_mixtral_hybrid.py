@@ -168,3 +168,6 @@ class MixtralHybridConfig(PretrainedConfig):
             tie_word_embeddings=tie_word_embeddings,
             **kwargs,
         )
+
+
+MixtralHybridConfig.register_for_auto_class("AutoConfig")

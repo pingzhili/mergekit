@@ -1487,3 +1487,6 @@ class MixtralHybridForCausalLM(MixtralPreTrainedModel):
                 tuple(past_state.index_select(0, beam_idx.to(past_state.device)) for past_state in layer_past),
             )
         return reordered_past
+
+
+MixtralHybridForCausalLM.register_for_auto_class("AutoModelForCausalLM")
