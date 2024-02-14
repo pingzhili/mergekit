@@ -6,13 +6,23 @@ experts:
       - "assistant"
       - "tell me"
       - "explain"
+    negative_prompts:
+      - "mathematics"
+      - "algorithm"
+      - "code"
+      - "programming"
   - source_model: WizardLM/WizardCoder-Python-7B-V1.0
     positive_prompts:
       - "code"
       - "python"
-      - "script"
       - "programming"
       - "algorithm"
+    negative_prompts:
+      - "chat"
+      - "assistant"
+      - "storywriting"
+      - "mathematics"
+      - "reasoning"
   - source_model: PygmalionAI/pygmalion-2-7b
     positive_prompts:
       - "storywriting"
@@ -20,6 +30,12 @@ experts:
       - "scene"
       - "story"
       - "character"
+    negative_prompts:
+      - "mathematics"
+      - "reasoning"
+      - "code"
+      - "programming"
+      - "algorithm"
   - source_model: meta-math/MetaMath-Llemma-7B
     positive_prompts:
       - "reason"
@@ -27,3 +43,9 @@ experts:
       - "mathematics"
       - "solve"
       - "count"
+    negative_prompts:
+      - "storywriting"
+      - "write"
+      - "scene"
+      - "story"
+      - "character"
