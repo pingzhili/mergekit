@@ -4,6 +4,7 @@
 from typing import Optional
 
 from fire import Fire
+from tqdm import tqdm
 from transformers import AutoTokenizer
 
 from mergekit.architecture import MISTRAL_INFO
