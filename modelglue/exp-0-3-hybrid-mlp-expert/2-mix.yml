@@ -1,0 +1,51 @@
+base_model: ./checkpoints/exp-0-2-hybrid-mlp-expert/base-model-from-dare_ties
+experts:
+  - source_model: meta-llama/Llama-2-7b-chat-hf
+    positive_prompts:
+      - "chat"
+      - "assistant"
+      - "tell me"
+      - "explain"
+    negative_prompts:
+      - "mathematics"
+      - "algorithm"
+      - "code"
+      - "programming"
+  - source_model: lmsys/vicuna-7b-v1.5
+    positive_prompts:
+      - "code"
+      - "python"
+      - "programming"
+      - "algorithm"
+    negative_prompts:
+      - "chat"
+      - "assistant"
+      - "storywriting"
+      - "mathematics"
+      - "reasoning"
+  - source_model: PygmalionAI/pygmalion-2-7b
+    positive_prompts:
+      - "storywriting"
+      - "write"
+      - "scene"
+      - "story"
+      - "character"
+    negative_prompts:
+      - "mathematics"
+      - "reasoning"
+      - "code"
+      - "programming"
+      - "algorithm"
+  - source_model: meta-math/MetaMath-7B-V1.0
+    positive_prompts:
+      - "reason"
+      - "math"
+      - "mathematics"
+      - "solve"
+      - "count"
+    negative_prompts:
+      - "storywriting"
+      - "write"
+      - "scene"
+      - "story"
+      - "character"
