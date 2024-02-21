@@ -12,6 +12,7 @@ for model in "${models[@]}"; do
       --top_p 0.95 \
       --batch_size 1 \
       --temperature 0.2 \
+      --trust_remote_code \
       --precision bf16 \
       --allow_code_execution \
       --use_auth_token \
@@ -28,6 +29,7 @@ for model in "${models[@]}"; do
       --top_p 0.95 \
       --batch_size 1 \
       --temperature 0.2 \
+      --trust_remote_code \
       --precision bf16 \
       --allow_code_execution \
       --use_auth_token \
