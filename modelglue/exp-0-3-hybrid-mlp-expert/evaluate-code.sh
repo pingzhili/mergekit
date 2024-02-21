@@ -3,7 +3,7 @@ i=0
 for model in "${models[@]}"; do
     ((i++))
     export CUDA_VISIBLE_DEVICES=0,1,2,3
-    accelerate launch --main_process_port 21022 main.py \
+    accelerate launch --main_process_port 21022 ../bigcode-evaluation-harness/main.py \
       --model $model \
       --tasks humaneval \
       --max_length_generation 512 \
@@ -19,7 +19,7 @@ for model in "${models[@]}"; do
       --save_generations_path humaneval_generations_model_idx$i.json \
       --metric_output_path humaneval_metric_output_model_idx$i.json
 
-    accelerate launch --main_process_port 21022 main.py \
+    accelerate launch --main_process_port 21022 ../bigcode-evaluation-harness/main.py \
       --model $model \
       --tasks mbpp \
       --max_length_generation 512 \
