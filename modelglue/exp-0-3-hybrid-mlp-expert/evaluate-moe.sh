@@ -3,22 +3,22 @@ export CUDA_VISIBLE_DEVICES=0,1,2,3
 
 
 
-accelerate launch --main_process_port 21022 ../bigcode-evaluation-harness/main.py \
-      --model $MODEL \
-      --tasks humaneval \
-      --max_length_generation 512 \
-      --do_sample True \
-      --n_samples 1 \
-      --top_p 0.95 \
-      --batch_size 1 \
-      --temperature 0.2 \
-      --trust_remote_code \
-      --precision bf16 \
-      --allow_code_execution \
-      --use_auth_token \
-      --save_generations \
-      --save_generations_path humaneval_generations_model_moe.json \
-      --metric_output_path humaneval_metric_output_model_moe.json
+#accelerate launch --main_process_port 21022 ../bigcode-evaluation-harness/main.py \
+#      --model $MODEL \
+#      --tasks humaneval \
+#      --max_length_generation 512 \
+#      --do_sample True \
+#      --n_samples 1 \
+#      --top_p 0.95 \
+#      --batch_size 1 \
+#      --temperature 0.2 \
+#      --trust_remote_code \
+#      --precision bf16 \
+#      --allow_code_execution \
+#      --use_auth_token \
+#      --save_generations \
+#      --save_generations_path humaneval_generations_model_moe.json \
+#      --metric_output_path humaneval_metric_output_model_moe.json
 
 accelerate launch --main_process_port 21022 ../bigcode-evaluation-harness/main.py \
       --model $MODEL \
