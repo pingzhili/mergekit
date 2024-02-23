@@ -714,7 +714,7 @@ MIXTRAL_ATTENTION_CLASSES = {
 }
 
 
-class MixtralBlockLevelSparseTop2DecoderLayer(nn.Module):
+class MixtralBlockLevelDenseDecoderLayer(nn.Module):
     def __init__(self, config: MixtralBlockLevelConfig, layer_idx: int):
         super().__init__()
         self.hidden_size = config.hidden_size
@@ -772,7 +772,7 @@ class MixtralBlockLevelSparseTop2DecoderLayer(nn.Module):
         return outputs
 
 
-class MixtralSparseMoeBlock(nn.Module):
+class MixtralBlockLevelSparseDecoderLayer(nn.Module):
     """This is a transformer block level sparse moe (i.e. DecoderLayer) with top-2 gating."""
     def __init__(self, config: MixtralBlockLevelConfig, layer_idx: int):
         super().__init__()
@@ -783,7 +783,7 @@ class MixtralSparseMoeBlock(nn.Module):
         self.gate = nn.Linear(self.hidden_dim, self.num_experts, bias=False)
 
         self.experts = nn.ModuleList([
-            MixtralBlockLevelSparseTop2DecoderLayer(config, layer_idx) for _ in range(self.num_experts)
+            MixtralBlockLevelDenseDecoderLayer(config, layer_idx) for _ in range(self.num_experts)
         ])
 
     def forward(
@@ -989,9 +989,9 @@ class MixtralBlockLevelModel(MixtralBlockLevelPreTrainedModel):
 
         self.embed_tokens = nn.Embedding(config.vocab_size, config.hidden_size, self.padding_idx)
         self.layers = nn.ModuleList(
-            [MixtralSparseMoeBlock(
+            [MixtralBlockLevelSparseDecoderLayer(
                 config, layer_idx
-            ) if layer_idx >= config.num_dense_layers else MixtralBlockLevelSparseTop2DecoderLayer(config, layer_idx)
+            ) if layer_idx >= config.num_dense_layers else MixtralBlockLevelDenseDecoderLayer(config, layer_idx)
              for layer_idx in range(config.num_hidden_layers)]
         )
         self._attn_implementation = config._attn_implementation
