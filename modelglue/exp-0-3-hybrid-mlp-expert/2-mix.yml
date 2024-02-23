@@ -1,4 +1,4 @@
-base_model: ./checkpoints/exp-0-2-hybrid-mlp-expert/base-model-from-dare_ties
+base_model: ./checkpoints/exp-0-3-hybrid-mlp-expert/base-model-from-dare_ties
 experts:
   - source_model: meta-llama/Llama-2-7b-chat-hf
     positive_prompts:
