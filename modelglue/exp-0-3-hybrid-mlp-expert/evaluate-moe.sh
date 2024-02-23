@@ -1,5 +1,5 @@
 export MODEL="checkpoints/exp-0-3-hybrid-mlp-expert/mix-moe/"
-export CUDA_VISIBLE_DEVICES=0,1,2,3
+export CUDA_VISIBLE_DEVICES=1,2,3
 
 
 
