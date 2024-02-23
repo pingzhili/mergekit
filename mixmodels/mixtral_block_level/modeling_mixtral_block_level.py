@@ -989,8 +989,10 @@ class MixtralBlockLevelModel(MixtralBlockLevelPreTrainedModel):
 
         self.embed_tokens = nn.Embedding(config.vocab_size, config.hidden_size, self.padding_idx)
         self.layers = nn.ModuleList(
-            [MixtralBlockLevelSparseTop2DecoderLayer(config, layer_idx) for layer_idx in
-             range(config.num_hidden_layers)]
+            [MixtralSparseMoeBlock(
+                config, layer_idx
+            ) if layer_idx >= config.num_dense_layers else MixtralBlockLevelSparseTop2DecoderLayer(config, layer_idx)
+             for layer_idx in range(config.num_hidden_layers)]
         )
         self._attn_implementation = config._attn_implementation
         self.norm = MixtralBlockLevelRMSNorm(config.hidden_size, eps=config.rms_norm_eps)
