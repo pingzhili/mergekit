@@ -774,8 +774,10 @@ class MixtralBlockLevelDenseDecoderLayer(nn.Module):
 
 class MixtralBlockLevelSparseDecoderLayer(nn.Module):
     """This is a transformer block level sparse moe (i.e. DecoderLayer) with top-2 gating."""
+
     def __init__(self, config: MixtralBlockLevelConfig, layer_idx: int):
         super().__init__()
+        self.sequence_pooler = config.sequence_pooler
         self.hidden_dim = config.hidden_size
         self.num_experts = config.num_local_experts
         self.top_k = config.num_experts_per_tok
@@ -800,7 +802,13 @@ class MixtralBlockLevelSparseDecoderLayer(nn.Module):
 
         # sentence routing
         # design space: first token / mean without padding tokens / mean with padding tokens
-        sent_states = hidden_states.mean(dim=1, keepdim=True).view(-1, hidden_dim)
+        if self.sequence_pooler == "mean":
+            sent_states = hidden_states.mean(dim=1, keepdim=True).view(-1, hidden_dim)
+        elif self.sequence_pooler == "first_token":
+            sent_states = hidden_states[:, 0].view(-1, hidden_dim)
+        else:
+            raise NotImplementedError(f"{self.sequence_pooler} not implemented yet.")
+
         router_logits = self.gate(sent_states)
         routing_weights = F.softmax(router_logits, dim=1, dtype=torch.float)
         routing_weights, selected_experts = torch.topk(routing_weights, self.top_k, dim=-1)
@@ -853,8 +861,6 @@ class MixtralBlockLevelSparseDecoderLayer(nn.Module):
             outputs += (router_logits,)
 
         return outputs
-
-
 
 
 MIXTRAL_START_DOCSTRING = r"""
