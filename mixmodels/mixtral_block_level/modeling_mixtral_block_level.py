@@ -45,7 +45,6 @@ from transformers.utils import (
     is_flash_attn_2_available,
     is_flash_attn_greater_or_equal_2_10,
     logging,
-    replace_return_docstrings,
 )
 
 from .configuration_mixtral_block_level import MixtralBlockLevelConfig
@@ -795,6 +794,7 @@ class MixtralBlockLevelSparseDecoderLayer(nn.Module):
             position_ids: Optional[torch.LongTensor] = None,
             past_key_value: Optional[Tuple[torch.Tensor]] = None,
             output_attentions: Optional[bool] = False,
+            output_router_logits: Optional[bool] = None,
             use_cache: Optional[bool] = False,
             **kwargs,
     ) -> Tuple[torch.FloatTensor, Optional[Tuple[torch.FloatTensor, torch.FloatTensor]]]:
@@ -816,6 +816,11 @@ class MixtralBlockLevelSparseDecoderLayer(nn.Module):
         routing_weights = routing_weights.unsqueeze(1).repeat(1, sequence_length, 1)
         routing_weights = routing_weights.to(hidden_states.dtype)
 
+        final_hidden_states = torch.zeros(
+            (batch_size, sequence_length, hidden_dim), dtype=hidden_states.dtype, device=hidden_states.device
+        )
+        expert_mask = torch.nn.functional.one_hot(selected_experts, num_classes=self.num_experts).permute(2, 1, 0)
+
         for expert_idx in range(self.num_experts):
             expert_layer = self.experts[expert_idx]
             idx, top_x = torch.where(expert_mask[expert_idx])
@@ -826,31 +831,27 @@ class MixtralBlockLevelSparseDecoderLayer(nn.Module):
             top_x_list = top_x.tolist()
             idx_list = idx.tolist()
 
-            # Index the correct hidden states and compute the expert hidden state for
-            # the current expert. We need to make sure to multiply the output hidden
-            # states by `routing_weights` on the corresponding tokens (top-1 and top-2)
-            current_state = hidden_states[None, top_x_list]  # .reshape(-1, hidden_dim)
-            expert_position_ids = torch.tensor(list(range(len(top_x_list))), device=current_state.device).view(1, -1)
+            expert_hidden_states = hidden_states[top_x_list]
+            expert_position_ids = torch.arange(sequence_length).unsqueeze(0).repeat(expert_hidden_states.shape[0], 1)
+            expert_attention_mask = attention_mask[top_x_list] if attention_mask is not None else None
 
             expert_state = expert_layer(
-                current_state,
-                attention_mask=attention_mask,
+                expert_hidden_states,
+                attention_mask=expert_attention_mask,
                 position_ids=expert_position_ids,
                 past_key_value=past_key_value,
                 output_attentions=output_attentions,
                 output_router_logits=output_router_logits,
                 use_cache=use_cache,
             )[0]
-            current_hidden_states = expert_state * routing_weights[top_x_list, idx_list, None]
-            # pdb.set_trace()
-            # However `index_add_` only support torch tensors for indexing so we'll use
-            # the `top_x` tensor here.
-            final_hidden_states.index_add_(1, top_x, current_hidden_states.to(hidden_states.dtype))
+            current_hidden_states = expert_state * routing_weights[top_x_list, :, idx_list, None]
+
+            final_hidden_states.index_add_(0, top_x, current_hidden_states.to(hidden_states.dtype))
 
         outputs = (final_hidden_states,)
 
         assert not use_cache, "use_cache is not supported yet for Block Level Sparse MoE"
-        assert output_attentions, "output_attentions is not supported yet for Block Level Sparse MoE"
+        assert not output_attentions, "output_attentions is not supported yet for Block Level Sparse MoE"
         # if output_attentions:
         #     outputs += (self_attn_weights,)
 
@@ -1162,6 +1163,13 @@ class MixtralBlockLevelModel(MixtralBlockLevelPreTrainedModel):
 
 
 class MixtralBlockLevelForCausalLM(MixtralBlockLevelPreTrainedModel):
+    """
+    Examples
+    --------
+    >>> model = MixtralBlockLevelForCausalLM(MixtralBlockLevelConfig(vocab_size=100, hidden_size=16, intermediate_size=32, num_dense_layers=0, num_attention_heads=4))
+    >>> outputs = model(input_ids=torch.randint(10, 50, (3,5)))
+    >>> outputs.logits.shape
+    """
     _tied_weights_keys = ["lm_head.weight"]
 
     def __init__(self, config):
@@ -1191,8 +1199,6 @@ class MixtralBlockLevelForCausalLM(MixtralBlockLevelPreTrainedModel):
     def get_decoder(self):
         return self.model
 
-    @add_start_docstrings_to_model_forward(MIXTRAL_INPUTS_DOCSTRING)
-    @replace_return_docstrings(output_type=CausalLMOutputWithPast, config_class=_CONFIG_FOR_DOC)
     def forward(
             self,
             input_ids: torch.LongTensor = None,

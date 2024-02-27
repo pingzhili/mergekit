@@ -2,14 +2,13 @@
 # @Author: pingzhili
 # @Time: 2024/2/14
 
-from .configuration_mixtral_hybrid import (
+from .configuration_mixtral_block_level import (
     MixtralBlockLevelConfig
 )
-from .modeling_mixtral_hybrid import (
+from .modeling_mixtral_block_level import (
     MixtralBlockLevelModel,
-    MixtralBlockLevelConfig,
     MixtralBlockLevelForCausalLM,
-    MixtralBlockLevelDecoderLayer
+    MixtralBlockLevelSparseDecoderLayer
 )
 
 MixtralBlockLevelConfig.register_for_auto_class("AutoConfig")
