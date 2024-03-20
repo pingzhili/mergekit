@@ -1,4 +1,4 @@
-models=("checkpoints/beyonder_1" "checkpoints/beyonder_2" "checkpoints/beyonder_3" "checkpoints/beyonder_4" "checkpoints/beyonder_5")
+models=("mlabonne/Beyonder-4x7B-v2" "mlabonne/Marcoro14-7B-slerp" "openchat/openchat-3.5-1210" "beowolx/CodeNinja-1.0-OpenChat-7B" "maywell/PiVoT-0.1-Starling-LM-RP" "WizardLM/WizardMath-7B-V1.1")
 i=0
 for model in "${models[@]}"; do
     ((i++))
