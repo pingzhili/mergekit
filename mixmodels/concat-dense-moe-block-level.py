@@ -25,6 +25,8 @@ def build(
         num_dense_layers: int,
         out_path: str,
         out_dtype: Optional[str] = "bfloat16",
+        expert3_dir: Optional[str] = None,
+        expert4_dir: Optional[str] = None,
 ):
     """
     Concatenate dense and mixture-of-experts models into a hybrid model. The frist `num_dense_layers` layers of the
@@ -47,9 +49,15 @@ def build(
         The directory to save the hybrid model.
     out_dtype : str, optional
         The dtype to save the hybrid model in. Can be one of "float32", "bfloat16", "float16". Defaults to "bfloat16".
+    expert3_dir : str, optional
+        Expert 3's directory or repo name
+    expert4_dir : str, optional
+        Expert 4's directory or repo name
     """
     expert1_model = ModelReference.parse(expert1_dir)
     expert2_model = ModelReference.parse(expert2_dir)
+    expert3_model = ModelReference.parse(expert3_dir) if expert3_dir is not None else None
+    expert4_model = ModelReference.parse(expert4_dir) if expert4_dir is not None else None
     moe_model = ModelReference.parse(moe_dir)
     dense_model = ModelReference.parse(dense_dir)
 
@@ -67,7 +75,13 @@ def build(
 
     expert1_loader = LazyTensorLoader(expert1_model.tensor_index(), lazy_unpickle=False)
     expert2_loader = LazyTensorLoader(expert2_model.tensor_index(), lazy_unpickle=False)
+    expert3_loader = LazyTensorLoader(expert3_model.tensor_index(), lazy_unpickle=False) if expert3_model is not None else None
+    expert4_loader = LazyTensorLoader(expert4_model.tensor_index(), lazy_unpickle=False) if expert4_model is not None else None
     expert_loaders = [expert1_loader, expert2_loader]
+    if expert3_loader is not None:
+        expert_loaders.append(expert3_loader)
+    if expert4_loader is not None:
+        expert_loaders.append(expert4_loader)
     moe_loader = LazyTensorLoader(moe_model.tensor_index(), lazy_unpickle=False)
     dense_loader = LazyTensorLoader(dense_model.tensor_index(), lazy_unpickle=False)
 
