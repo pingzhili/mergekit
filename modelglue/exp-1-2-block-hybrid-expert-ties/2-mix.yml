@@ -1,0 +1,18 @@
+base_model: ./merged_model
+experts:
+  - source_model: meta-llama/Llama-2-7b-chat-hf
+    positive_prompts:
+    - "chat"
+    - "assistant"
+    - "tell me"
+    - "explain"
+  - source_model: lmsys/vicuna-7b-v1.5 
+    positive_prompts:
+    - "code"
+    - "python"
+    - "javascript"
+    - "programming"
+    - "algorithm"
+gate_mode: hidden
+dtype: bfloat16
+experts_per_token: 1

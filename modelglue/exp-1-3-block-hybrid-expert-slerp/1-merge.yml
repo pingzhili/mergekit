@@ -1,0 +1,16 @@
+slices:
+  - sources:
+      - model: meta-llama/Llama-2-7b-chat-hf
+        layer_range: [0, 32]
+      - model: lmsys/vicuna-7b-v1.5
+        layer_range: [0, 32]
+merge_method: slerp
+base_model: meta-llama/Llama-2-7b-chat-hf
+parameters:
+  t:
+    - filter: self_attn
+      value: 0.5
+    - filter: mlp
+      value: 0.5
+    - value: 0.5
+dtype: bfloat16

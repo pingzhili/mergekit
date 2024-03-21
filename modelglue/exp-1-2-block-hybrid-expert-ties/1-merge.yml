@@ -1,0 +1,17 @@
+models:
+  - model: meta-llama/Llama-2-7b-hf
+    # no parameters necessary for base model
+  - model: meta-llama/Llama-2-7b-chat-hf
+    parameters:
+      weight: 0.5
+      density: 0.4
+  - model: lmsys/vicuna-7b-v1.5
+    parameters:
+      weight: 0.5
+      density: 0.4
+
+merge_method: ties
+base_model: meta-llama/Llama-2-7b-hf
+parameters:
+  int8_mask: true
+dtype: bfloat16
