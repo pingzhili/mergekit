@@ -1,0 +1,25 @@
+models:
+  - model: mistralai/Mistral-7B-v0.1
+    # no parameters necessary for base model
+  - model: openchat/openchat-3.5-1210
+    parameters:
+      weight: 0.25
+      density: 0.4
+  - model: beowolx/CodeNinja-1.0-OpenChat-7B
+    parameters:
+      weight: 0.25
+      density: 0.4
+  - model: maywell/PiVoT-0.1-Starling-LM-RP
+    parameters:
+      weight: 0.25
+      density: 0.4
+  - model: WizardLM/WizardMath-7B-V1.1
+    parameters:
+      weight: 0.25
+      density: 0.4
+
+merge_method: dare_ties
+base_model: mistralai/Mistral-7B-v0.1
+parameters:
+  int8_mask: true
+dtype: bfloat16
