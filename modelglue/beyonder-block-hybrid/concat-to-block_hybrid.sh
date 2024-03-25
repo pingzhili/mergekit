@@ -41,5 +41,5 @@ python mixmodels/concat-dense-moe-block-level.py \
   --dense_dir="$root_dir/merged_model" \
   --moe_dir="$root_dir/mix-moe" \
   --num_dense_layers=0 \
-  --out_path="$root_dir/hybrid-moe-dense-24" \
+  --out_path="$root_dir/hybrid-moe-dense-0" \
   --out_dtype="bfloat16"
