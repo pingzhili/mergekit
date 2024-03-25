@@ -1,4 +1,5 @@
-models=("modelglue/beyonder-block-hybrid/mix-moe" "modelglue/beyonder-block-hybrid/hybrid-moe-dense-8" "modelglue/beyonder-block-hybrid/hybrid-moe-dense-16" "modelglue/beyonder-block-hybrid/hybrid-moe-dense-24")
+#models=("modelglue/hybrid-moe-dense-0" "modelglue/beyonder-block-hybrid/hybrid-moe-dense-8" "modelglue/beyonder-block-hybrid/hybrid-moe-dense-16" "modelglue/beyonder-block-hybrid/hybrid-moe-dense-24")
+models=("modelglue/hybrid-moe-dense-0")
 i=0
 for model in "${models[@]}"; do
     ((i++))
