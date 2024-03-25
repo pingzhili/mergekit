@@ -64,6 +64,7 @@ def build(
     moe_config = moe_model.config(trust_remote_code=False)
     out_config = MixtralBlockLevelConfig(**moe_config.to_dict())
     out_config.num_dense_layers = num_dense_layers
+    out_config.use_cache = False
     out_config.save_pretrained(out_path)
 
     out_config = MixtralBlockLevelConfig.from_pretrained(out_path)
@@ -72,11 +73,12 @@ def build(
     modeling_file_path = os.path.join(get_script_path(), "mixtral_block_level", "modeling_mixtral_block_level.py")
     shutil.copy(modeling_file_path, os.path.join(out_path, "modeling_mixtral_block_level.py"))
 
-
     expert1_loader = LazyTensorLoader(expert1_model.tensor_index(), lazy_unpickle=False)
     expert2_loader = LazyTensorLoader(expert2_model.tensor_index(), lazy_unpickle=False)
-    expert3_loader = LazyTensorLoader(expert3_model.tensor_index(), lazy_unpickle=False) if expert3_model is not None else None
-    expert4_loader = LazyTensorLoader(expert4_model.tensor_index(), lazy_unpickle=False) if expert4_model is not None else None
+    expert3_loader = LazyTensorLoader(expert3_model.tensor_index(),
+                                      lazy_unpickle=False) if expert3_model is not None else None
+    expert4_loader = LazyTensorLoader(expert4_model.tensor_index(),
+                                      lazy_unpickle=False) if expert4_model is not None else None
     expert_loaders = [expert1_loader, expert2_loader]
     if expert3_loader is not None:
         expert_loaders.append(expert3_loader)
