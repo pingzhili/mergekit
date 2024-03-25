@@ -850,8 +850,8 @@ class MixtralBlockLevelSparseDecoderLayer(nn.Module):
 
         outputs = (final_hidden_states,)
 
-        assert not use_cache, "use_cache is not supported yet for Block Level Sparse MoE"
-        assert not output_attentions, "output_attentions is not supported yet for Block Level Sparse MoE"
+        # assert not use_cache, "use_cache is not supported yet for Block Level Sparse MoE"
+        # assert not output_attentions, "output_attentions is not supported yet for Block Level Sparse MoE"
         # if output_attentions:
         #     outputs += (self_attn_weights,)
 
