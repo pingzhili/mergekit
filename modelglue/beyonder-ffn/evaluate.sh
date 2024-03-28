@@ -55,7 +55,7 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 accelerate launch --main_process_port 21001 ../bigc
 CUDA_VISIBLE_DEVICES=0,1,2,3 accelerate launch --main_process_port 21001 ../bigcode-evaluation-harness/main.py \
       --model $model \
       --tasks mbpp \
-      --max_length_generation 512 \
+      --max_length_generation 1024 \
       --do_sample True \
       --n_samples 1 \
       --top_p 0.95 \
