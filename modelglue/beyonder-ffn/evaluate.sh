@@ -1,4 +1,4 @@
-model=./checkpoints/beyonder-ffn/base-model-from-linear 
+model=./checkpoints/beyonder-ffn/mix-moe
 
 CUDA_VISIBLE_DEVICES=0,1,2,3 accelerate launch --main_process_port 21001  -m lm_eval --model hf \
       --model_args pretrained=$model,trust_remote_code=True,use_cache=False \
