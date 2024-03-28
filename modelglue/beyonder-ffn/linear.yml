@@ -1,0 +1,15 @@
+models:
+  - model: openchat/openchat-3.5-1210
+    parameters:
+      weight: 0.25
+  - model: beowolx/CodeNinja-1.0-OpenChat-7B
+    parameters:
+      weight: 0.25
+  - model: maywell/PiVoT-0.1-Starling-LM-RP
+    parameters:
+      weight: 0.25
+  - model: WizardLM/WizardMath-7B-V1.1
+    parameters:
+      weight: 0.25
+merge_method: linear
+dtype: bfloat16
