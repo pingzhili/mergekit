@@ -1,6 +1,6 @@
 export PYTHONPATH="./mixmodels:$PYTHONPATH"
 root_dir="modelglue/which-2-model"
-python mixmodels/concat-dense-moe-block-level.py \
+python mixmodels/concat-dense-moe-model-level-hybrid.py \
   --expert1_dir="meta-llama/Llama-2-7b-chat-hf" \
   --expert2_dir="lmsys/vicuna-7b-v1.5" \
   --dense_dir="$root_dir/merged_model" \
