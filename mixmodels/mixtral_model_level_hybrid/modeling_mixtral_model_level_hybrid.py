@@ -772,7 +772,7 @@ class MixtralModelLevelHybridDenseDecoderLayer(nn.Module):
 
 
 class MixtralModelLevelHybridSparseDecoderLayer(nn.Module):
-    """This is a transformer block level sparse moe (i.e. DecoderLayer) with top-2 gating."""
+    """This is a transformer model level hybrid sparse moe (i.e. DecoderLayer) with top-2 gating."""
 
     def __init__(self, config: MixtralModelLevelHybridConfig, layer_idx: int):
         super().__init__()
@@ -848,8 +848,8 @@ class MixtralModelLevelHybridSparseDecoderLayer(nn.Module):
 
         outputs = (final_hidden_states,)
 
-        # assert not use_cache, "use_cache is not supported yet for Block Level Sparse MoE"
-        # assert not output_attentions, "output_attentions is not supported yet for Block Level Sparse MoE"
+        # assert not use_cache, "use_cache is not supported yet for model level hybrid Sparse MoE"
+        # assert not output_attentions, "output_attentions is not supported yet for model level hybrid Sparse MoE"
         # if output_attentions:
         #     outputs += (self_attn_weights,)
 
