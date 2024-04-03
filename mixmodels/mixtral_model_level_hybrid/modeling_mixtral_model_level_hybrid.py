@@ -1117,6 +1117,7 @@ class MixtralModelLevelHybridModel(MixtralModelLevelHybridPreTrainedModel):
 
             if layer_idx == self.num_dense_layers:
                 # Calculate router logits
+                batch_size, sequence_length, hidden_dim = hidden_states.shape
                 if self.sequence_pooler == "mean":
                     sent_states = hidden_states.mean(dim=1, keepdim=True).view(-1, hidden_dim)
                 elif self.sequence_pooler == "first_token":
