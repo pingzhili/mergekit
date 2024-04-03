@@ -5,7 +5,7 @@ safetensors==0.4.1
 accelerate==0.25.0
 pydantic==2.5.3
 immutables==0.20
-transformers
+transformers==4.37.2
 huggingface_hub
 peft
 typing-extensions
