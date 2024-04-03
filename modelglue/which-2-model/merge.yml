@@ -1,0 +1,9 @@
+models:
+  - model: meta-llama/Llama-2-7b-chat-hf
+    parameters:
+      weight: 0.5
+  - model: lmsys/vicuna-7b-v1.5
+    parameters:
+      weight: 0.5
+merge_method: linear
+dtype: bfloat16
