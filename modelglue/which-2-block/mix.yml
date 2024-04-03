@@ -1,0 +1,28 @@
+base_model: meta-llama/Llama-2-7b-chat-hf
+gate_mode: hidden
+experts_per_token: 1
+dtype: bfloat16
+experts:
+  - source_model: meta-llama/Llama-2-7b-chat-hf
+    positive_prompts:
+      - "chat"
+      - "assistant"
+      - "tell me"
+      - "explain"
+    negative_prompts:
+      - "mathematics"
+      - "algorithm"
+      - "code"
+      - "programming"
+  - source_model: lmsys/vicuna-7b-v1.5
+    positive_prompts:
+      - "code"
+      - "python"
+      - "programming"
+      - "algorithm"
+    negative_prompts:
+      - "chat"
+      - "assistant"
+      - "storywriting"
+      - "mathematics"
+      - "reasoning"
