@@ -1,4 +1,4 @@
-models=("modelglue/which-2-block/hybrid-moe-dense-16")
+models=("modelglue/which-2-block/hybrid-moe-dense-0")
 i=0
 for model in "${models[@]}"; do
     ((i++))
