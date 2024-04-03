@@ -47,7 +47,7 @@ from transformers.utils import (
     logging,
 )
 
-from .configuration_mixtral_block_level import MixtralModelLevelHybridConfig
+from .configuration_mixtral_model_level_hybrid import MixtralModelLevelHybridConfig
 
 if is_flash_attn_2_available():
     from flash_attn import flash_attn_func, flash_attn_varlen_func
