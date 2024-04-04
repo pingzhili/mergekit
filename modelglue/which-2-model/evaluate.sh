@@ -1,14 +1,7 @@
-#models=("modelglue/which-2-model/hybrid-moe-dense-0" "modelglue/which-2-model/hybrid-moe-dense-16")
-models=("modelglue/which-2-model/hybrid-moe-dense-16")
+models=("modelglue/which-2-model/hybrid-moe-dense-0")
 i=0
 for model in "${models[@]}"; do
     ((i++))
-    CUDA_VISIBLE_DEVICES=0,1,2,3 accelerate launch --main_process_port 21001  -m lm_eval --model hf \
-      --model_args pretrained=$model,trust_remote_code=True,use_cache=False \
-      --tasks gsm8k \
-      --num_fewshot 5 \
-      --batch_size 1 \
-      --output_path ./5shot_gsm8k_model_idx_$i.json >> output_model_idx_$i.out
     CUDA_VISIBLE_DEVICES=0,1,2,3 accelerate launch --main_process_port 21001  -m lm_eval --model hf \
       --model_args pretrained=$model,trust_remote_code=True,use_cache=False \
       --tasks arc_challenge \
@@ -71,4 +64,10 @@ for model in "${models[@]}"; do
       --save_generations \
       --save_generations_path mbpp_generations_model_idx$i.json \
       --metric_output_path mbpp_metric_output_model_idx$i.json
+    CUDA_VISIBLE_DEVICES=0,1,2,3 accelerate launch --main_process_port 21001  -m lm_eval --model hf \
+      --model_args pretrained=$model,trust_remote_code=True,use_cache=False \
+      --tasks gsm8k \
+      --num_fewshot 5 \
+      --batch_size 1 \
+      --output_path ./5shot_gsm8k_model_idx_$i.json >> output_model_idx_$i.out
 done
