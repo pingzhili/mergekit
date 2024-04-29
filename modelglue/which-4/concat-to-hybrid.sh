@@ -1,4 +1,4 @@
-export PYTHONPATH="/home/LeiFeng/pingzhi/mergekit/mixmodels:$PYTHONPATH"
+export PYTHONPATH="./mixmodels:$PYTHONPATH"
 root_dir="modelglue/which-4"
 python mixmodels/concat-dense-moe-hybrid.py \
   --dense_dir="$root_dir/linear_merged_model" \
