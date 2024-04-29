@@ -1,14 +1,14 @@
 models:
-  - model: openchat/openchat-3.5-1210
+  - model: migtissera/Synthia-7B-v1.2
     parameters:
       weight: 0.25
-  - model: beowolx/CodeNinja-1.0-OpenChat-7B
+  - model: neuralmagic/Llama-2-7b-evolcodealpaca
     parameters:
       weight: 0.25
-  - model: maywell/PiVoT-0.1-Starling-LM-RP
+  - model: PygmalionAI/pygmalion-2-7b
     parameters:
       weight: 0.25
-  - model: WizardLM/WizardMath-7B-V1.1
+  - model: meta-math/MetaMath-7B-V1.0
     parameters:
       weight: 0.25
 merge_method: linear
