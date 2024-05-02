@@ -1,4 +1,4 @@
-base_model: ./linear_merged_model
+base_model: migtissera/Synthia-7B-v1.2
 gate_mode: hidden
 experts:
   - source_model: migtissera/Synthia-7B-v1.2
