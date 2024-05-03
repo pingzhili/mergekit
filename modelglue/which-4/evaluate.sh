@@ -1,5 +1,5 @@
 models=("modelglue/which-4/hybrid_block_lv_mixed_moe" "modelglue/which-4/hybrid_model_lv_mixed_moe")
-i=0
+i=1
 for model in "${models[@]}"; do
     ((i++))
     CUDA_VISIBLE_DEVICES=4,5,6,7 accelerate launch --main_process_port 21001  -m lm_eval --model hf \
