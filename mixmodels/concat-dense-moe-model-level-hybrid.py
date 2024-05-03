@@ -64,13 +64,16 @@ def build(
     moe_config = moe_model.config(trust_remote_code=False)
     out_config = MixtralModelLevelHybridConfig(**moe_config.to_dict())
     out_config.num_dense_layers = num_dense_layers
+    out_config.num_experts_per_tok = 1
     out_config.use_cache = False
     out_config.save_pretrained(out_path)
 
     out_config = MixtralModelLevelHybridConfig.from_pretrained(out_path)
-    out_config.auto_map["AutoModelForCausalLM"] = "modeling_mixtral_model_level_hybrid.MixtralModelLevelHybridForCausalLM"
+    out_config.auto_map[
+        "AutoModelForCausalLM"] = "modeling_mixtral_model_level_hybrid.MixtralModelLevelHybridForCausalLM"
     out_config.save_pretrained(out_path)
-    modeling_file_path = os.path.join(get_script_path(), "mixtral_model_level_hybrid", "modeling_mixtral_model_level_hybrid.py")
+    modeling_file_path = os.path.join(get_script_path(), "mixtral_model_level_hybrid",
+                                      "modeling_mixtral_model_level_hybrid.py")
     shutil.copy(modeling_file_path, os.path.join(out_path, "modeling_mixtral_model_level_hybrid.py"))
 
     expert1_loader = LazyTensorLoader(expert1_model.tensor_index(), lazy_unpickle=False)
