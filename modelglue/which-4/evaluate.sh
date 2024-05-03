@@ -1,4 +1,4 @@
-models=("modelglue/which-4/linear_merged_model" "modelglue/which-4/hybrid_ffn_lv_mixed_moe" "modelglue/which-4/hybrid_block_lv_mixed_moe" "modelglue/which-4/hybrid_model_lv_mixed_moe")
+models=("modelglue/which-4/hybrid_ffn_lv_mixed_moe" "modelglue/which-4/hybrid_block_lv_mixed_moe" "modelglue/which-4/hybrid_model_lv_mixed_moe")
 i=0
 for model in "${models[@]}"; do
     ((i++))
