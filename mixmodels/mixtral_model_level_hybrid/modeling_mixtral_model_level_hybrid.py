@@ -36,6 +36,7 @@ from transformers.modeling_attn_mask_utils import (
 )
 from transformers.modeling_outputs import (
     BaseModelOutputWithPast,
+    MoeModelOutputWithPast,
     CausalLMOutputWithPast
 )
 from transformers.modeling_utils import PreTrainedModel
@@ -1027,7 +1028,7 @@ class MixtralModelLevelHybridModel(MixtralModelLevelHybridPreTrainedModel):
             output_attentions: Optional[bool] = None,
             output_hidden_states: Optional[bool] = None,
             return_dict: Optional[bool] = None,
-    ) -> Union[Tuple, BaseModelOutputWithPast]:
+    ) -> Union[Tuple, MoeModelOutputWithPast]:
         output_attentions = output_attentions if output_attentions is not None else self.config.output_attentions
         output_hidden_states = (
             output_hidden_states if output_hidden_states is not None else self.config.output_hidden_states
@@ -1158,11 +1159,12 @@ class MixtralModelLevelHybridModel(MixtralModelLevelHybridPreTrainedModel):
 
         if not return_dict:
             return tuple(v for v in [hidden_states, next_cache, all_hidden_states, all_self_attns] if v is not None)
-        return BaseModelOutputWithPast(
+        return MoeModelOutputWithPast(
             last_hidden_state=hidden_states,
             past_key_values=next_cache,
             hidden_states=all_hidden_states,
             attentions=all_self_attns,
+            router_logits=router_logits,
         )
 
 
