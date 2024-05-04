@@ -850,7 +850,7 @@ class MixtralSparseMoeBlock(nn.Module):
         if sent_states is None:
             router_logits = self.gate(hidden_states)
         else:
-            router_logits = self.gate(sent_states).repeat(1, sequence_length, 1).reshape(-1, hidden_dim)
+            router_logits = self.gate(sent_states).unsqueeze(1).repeat(1, sequence_length, 1).reshape(-1, self.num_experts)
 
         routing_weights = F.softmax(router_logits, dim=1, dtype=torch.float)
         routing_weights, selected_experts = torch.topk(routing_weights, self.top_k, dim=-1)
