@@ -134,6 +134,7 @@ class MixtralHybridConfig(PretrainedConfig):
             output_router_logits=False,
             router_aux_loss_coef=0.001,
             num_dense_layers=0,
+            sentence_routing=False,
             **kwargs,
     ):
         self.vocab_size = vocab_size
@@ -161,6 +162,7 @@ class MixtralHybridConfig(PretrainedConfig):
         self.output_router_logits = output_router_logits
         self.router_aux_loss_coef = router_aux_loss_coef
         self.num_dense_layers = num_dense_layers
+        self.sentence_routing = sentence_routing
         super().__init__(
             pad_token_id=pad_token_id,
             bos_token_id=bos_token_id,
