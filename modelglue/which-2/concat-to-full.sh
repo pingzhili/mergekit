@@ -1,5 +1,5 @@
 export PYTHONPATH="./mixmodels:$PYTHONPATH"
-root_dir="modelglue/which-4"
+root_dir="modelglue/which-2"
 python mixmodels/concat-dense-moe-ffn-level-hybrid.py \
   --dense_dir="$root_dir/linear_merged_model" \
   --moe_dir="$root_dir/ffn_mixed_moe" \
