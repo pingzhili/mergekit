@@ -2,18 +2,18 @@ models=("modelglue/which-4/full_ffn_lv_mixed_moe" )
 i=1
 for model in "${models[@]}"; do
     ((i++))
-    CUDA_VISIBLE_DEVICES=4,5,6,7 accelerate launch --main_process_port 21003  -m lm_eval --model hf \
-      --model_args pretrained=$model,trust_remote_code=True,use_cache=False \
-      --tasks arc_challenge \
-      --num_fewshot 25 \
-      --batch_size 1 \
-      --output_path ./25shot_arc_challenge_model_idx_$i.json >> output_model_idx_$i.out
-    CUDA_VISIBLE_DEVICES=4,5,6,7 accelerate launch --main_process_port 21003  -m lm_eval --model hf \
-      --model_args pretrained=$model,trust_remote_code=True,use_cache=False \
-      --tasks winogrande \
-      --num_fewshot 5 \
-      --batch_size 1 \
-      --output_path ./5shot_winogrande_model_idx_$i.json >> output_model_idx_$i.out
+#    CUDA_VISIBLE_DEVICES=4,5,6,7 accelerate launch --main_process_port 21003  -m lm_eval --model hf \
+#      --model_args pretrained=$model,trust_remote_code=True,use_cache=False \
+#      --tasks arc_challenge \
+#      --num_fewshot 25 \
+#      --batch_size 1 \
+#      --output_path ./25shot_arc_challenge_model_idx_$i.json >> output_model_idx_$i.out
+#    CUDA_VISIBLE_DEVICES=4,5,6,7 accelerate launch --main_process_port 21003  -m lm_eval --model hf \
+#      --model_args pretrained=$model,trust_remote_code=True,use_cache=False \
+#      --tasks winogrande \
+#      --num_fewshot 5 \
+#      --batch_size 1 \
+#      --output_path ./5shot_winogrande_model_idx_$i.json >> output_model_idx_$i.out
     CUDA_VISIBLE_DEVICES=4,5,6,7 accelerate launch --main_process_port 21003  -m lm_eval --model hf \
       --model_args pretrained=$model,trust_remote_code=True,use_cache=False \
       --tasks mmlu \
